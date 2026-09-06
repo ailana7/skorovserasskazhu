@@ -5,79 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>СКОРО ВСЁ РАССКАЖУ❤️</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #0d0d0d;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        .card {
-            position: relative;
-            cursor: pointer;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            max-width: 400px;
-            width: 90%;
-            transition: transform 0.2s ease;
-        }
-        .card:hover {
-            transform: scale(1.02);
-        }
-        .card img {
-            width: 100%;
-            display: block;
-        }
-        #screamer-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000;
-            z-index: 9999;
-        }
-        #screamer-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .card { width: 100%; max-width: 500px; cursor: pointer; }
+        .card img { width: 100%; height: auto; display: block; }
+        #screamer-container { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 99999; }
+        #screamer-video { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
 
-    <div class="card" onclick="triggerScreamer()">
+    <div class="card" onclick="startScreamer()">
         <img src="photo.jpeg" alt="СКОРО ВСЁ РАССКАЖУ❤️">
     </div>
 
     <div id="screamer-container">
-        <video id="screamer-video" src="screamer.mp4" playsinline></video>
+        <video id="screamer-video" src="screamer.mp4" playsinline webkit-playsinline></video>
     </div>
 
     <script>
-        function triggerScreamer() {
+        function startScreamer() {
             const container = document.getElementById('screamer-container');
             const video = document.getElementById('screamer-video');
             
             container.style.display = 'block';
             
+            // Пробуем включить фуллскрин (если поддерживается телефоном)
             if (container.requestFullscreen) {
-                container.requestFullscreen();
+                container.requestFullscreen().catch(() => {});
             } else if (container.webkitRequestFullscreen) {
-                container.webkitRequestFullscreen();
+                container.webkitRequestFullscreen().catch(() => {});
             }
 
             video.currentTime = 0;
-            video.play();
+            video.muted = false;
+            video.play().catch(err => console.log(err));
         }
     </script>
 </body>
